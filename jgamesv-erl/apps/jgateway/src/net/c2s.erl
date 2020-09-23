@@ -50,8 +50,7 @@ handle_cast(_Msg, State) ->
    {noreply, State}.
 
 handle_info({tcp, Socket, NewBin}, #state{socket = Socket, rest = Bin, reader = Reader} = State) ->
-    BinData = case Bin of <<>> -> NewBin; _ -> <<Bin/binary, NewBin/binary>> end,
-    case read(Reader, BinData, Socket) of 
+    case read(Reader, <<Bin/binary, NewBin/binary>>, Socket) of 
         {ok, RestBin} ->
             inet:setopts(Socket, [{active, 1}]),
             {noreply, State#state{rest = RestBin}};

@@ -76,7 +76,6 @@ code_change(_OldVsn, State, _Extra) ->
 read(Reader, BinData, Socket) ->
     case Reader:decode(BinData) of 
         {ok, Data, Rest1} ->
-            Reader:service(Data, Socket),
             read(Reader, Rest1, Socket);
         wait ->
             {ok, BinData}
